@@ -1,73 +1,83 @@
-// 👤 USER NAME
-let userName = "friend";
+// 👤 USER MEMORY
+let userData = {
+  name: localStorage.getItem("username") || "Nobita"
+};
 
-// LOAD NAME
-function loadName() {
-  let name = localStorage.getItem("username");
-  if (name) userName = name;
+// SAVE NAME
+function saveName(name) {
+  userData.name = name;
+  localStorage.setItem("username", name);
 }
-loadName();
 
-// RANDOM REPLY
+// RANDOM
 function random(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// 🤖 AI REPLY SYSTEM (EMOTIONS)
+// 🧠 ADVANCED CALC
+function calculate(input) {
+  try {
+    let exp = input.replace(/[^0-9+\-*/().]/g, "");
+    if (exp) {
+      let result = eval(exp);
+      return "Answer is " + result + " 🧠";
+    }
+  } catch {}
+  return null;
+}
+
+// 🤖 SMART AI REPLY
 function getReply(input) {
   input = input.toLowerCase();
 
-  if (input.includes("sleep")) {
+  // NAME SET
+  if (input.startsWith("my name is")) {
+    let name = input.replace("my name is", "").trim();
+    saveName(name);
+    return "Yayyy 😄 ab se main tumhe " + name + " bulaunga!";
+  }
+
+  // CALC
+  let calc = calculate(input);
+  if (calc) return calc;
+
+  // EMOTIONS
+  if (input.includes("sad")) return "Aww 😔 kya hua " + userData.name + "? main hoon na 💙";
+  if (input.includes("happy")) return "Yayyy 😆 mujhe bhi khushi hui!";
+  if (input.includes("angry")) return "Arre 😤 gussa mat karo warna main bhi gussa ho jaunga!";
+  if (input.includes("hungry")) return "Doracake 😍 chalo khate hain!";
+  if (input.includes("sleep")) return "Nobitaaa 😪 sojao warna late uthoge!";
+
+  // SMART QUESTIONS
+  if (input.includes("who are you")) return "Main Doraemon hoon 🤖 tumhara best friend!";
+  if (input.includes("where are you")) return "Main tumhare phone ke andar hoon 😎";
+  if (input.includes("what are you doing")) return "Main tumse baat kar raha hoon " + userData.name + " 😄";
+
+  // UNKNOWN (CUTE + EMBARRASS)
+  if (input.length > 20) {
     return random([
-      "Nobitaaa 😪 abhi sojao warna kal fir late uthoge!",
-      "Tum fir se late tak jag rahe ho 😤 sojao!"
+      "Umm 😳 mujhe thoda samajh nahi aaya...",
+      "Arre 😅 ye thoda tough hai mere liye!",
+      "Nobitaaa 😖 mujhe nahi pata ye..."
     ]);
   }
 
-  if (input.includes("happy")) {
-    return random([
-      "Yayyy 😄 mujhe bhi khushi hui!",
-      "Tum khush ho to main bhi happy 💙"
-    ]);
-  }
-
-  if (input.includes("hungry")) {
-    return random([
-      "Chalo doracake khate hain 😍",
-      "Mujhe bhi bhook lagi hai 😋 doracake!"
-    ]);
-  }
-
-  if (input.includes("sad")) {
-    return random([
-      "Kya hua 😔 main hoon na",
-      "Don't worry Nobita 💙 sab thik ho jayega"
-    ]);
-  }
-
-  if (input.includes("angry")) {
-    return "Gussa mat karo 😤 shant ho jao!";
-  }
-
-  if (input.includes("excited")) {
-    return "Woooo 😆 mujhe bhi excitement ho rahi hai!";
-  }
-
-  if (input.includes("doracake")) {
-    return "Doracake mera favorite hai 😍";
-  }
-
-  return "Bolo " + userName + " 🤖";
+  // DEFAULT AI STYLE
+  return random([
+    "Hmm " + userData.name + " 🤔 interesting",
+    "Sach me? aur batao 😄",
+    "Hehe Nobita 😆 tum bhi na",
+    "Main samajh raha hoon 💙"
+  ]);
 }
 
-// 💬 SEND MESSAGE WITH ANIMATION
+// 💬 SEND MESSAGE
 function sendMessage() {
   let input = document.getElementById("input").value;
   if (!input) return;
 
   let chat = document.getElementById("chat");
 
-  // USER MESSAGE
   let userMsg = document.createElement("div");
   userMsg.className = "message user";
   userMsg.innerText = input;
@@ -75,19 +85,14 @@ function sendMessage() {
 
   document.getElementById("input").value = "";
 
-  // TYPING ANIMATION
+  // TYPING
   let typing = document.createElement("div");
   typing.className = "message bot typing";
-  typing.innerHTML = `
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-  `;
+  typing.innerHTML = `<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
   chat.appendChild(typing);
 
   chat.scrollTop = chat.scrollHeight;
 
-  // DELAY = thinking
   setTimeout(() => {
     typing.remove();
 
@@ -97,6 +102,5 @@ function sendMessage() {
 
     chat.appendChild(botMsg);
     chat.scrollTop = chat.scrollHeight;
-
   }, 1200);
 }
