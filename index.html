@@ -1,19 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Doraemon AI 💙</title>
+
+  <!-- CSS LINK -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>🤖 Doraemon AI Bot</h1>
+  <div class="app">
 
-<div id="chat" style="border:1px solid black;height:200px;overflow:auto;"></div>
+    <div class="header">
+      🤖 Doraemon AI 💙
+    </div>
 
-<input id="input" placeholder="Talk to Doraemon">
-<button onclick="sendMessage()">Send</button>
+    <div id="chat" class="chat-box"></div>
 
-<script src="script.js"></script>
+    <div class="input-area">
+      <input id="input" placeholder="Talk to Doraemon..." />
+      <button onclick="sendMessage()">➤</button>
+    </div>
+
+  </div>
+
+  <!-- JS LINK -->
+  <script src="script.js"></script>
 
 </body>
 </html>
